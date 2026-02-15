@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hadi Keramati — Selected Publications</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #faf9f6;
+    --accent: #c0392b;
+    --accent-light: #e74c3c;
+    --muted: #6b7280;
+    --border: #e5e2dc;
+    --card-bg: #ffffff;
+    --tag-bg: #f0eeea;
+    --shadow: 0 2px 20px rgba(26,26,46,0.06);
+    --shadow-hover: 0 8px 40px rgba(26,26,46,0.12);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Grain overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    z-index: 9999;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ─── Header ─── */
+  header {
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--accent));
+  }
+
+  .header-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: block;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+
+  .header-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 6vw, 64px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.35s;
+  }
+
+  .header-affiliation {
+    font-size: 16px;
+    color: var(--muted);
+    font-weight: 300;
+    max-width: 600px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.5s;
+  }
+
+  .header-affiliation a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .header-affiliation a:hover { border-color: var(--accent); }
+
+  .header-meta {
+    display: flex;
+    gap: 28px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.65s;
+  }
+
+  .header-meta a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.3s;
+  }
+  .header-meta a:hover { color: var(--accent); }
+
+  .header-meta svg { width: 14px; height: 14px; }
+
+  /* ─── Section Title ─── */
+  .section-intro {
+    padding: 60px 0 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.8s;
+  }
+
+  .section-intro h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .section-intro p {
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 300;
+  }
+
+  /* ─── Publication Cards ─── */
+  .publications {
+    padding: 20px 0 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .pub-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 40px;
+    position: relative;
+    transition: box-shadow 0.4s ease, transform 0.4s ease;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .pub-card:nth-child(1) { animation-delay: 0.9s; }
+  .pub-card:nth-child(2) { animation-delay: 1.05s; }
+  .pub-card:nth-child(3) { animation-delay: 1.2s; }
+
+  .pub-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+
+  .pub-card::before {
+    content: attr(data-number);
+    position: absolute;
+    top: -14px;
+    left: 36px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--accent);
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .pub-venue {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pub-venue .year {
+    background: var(--tag-bg);
+    color: var(--ink);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+  }
+
+  .pub-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+
+  .pub-authors {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    font-weight: 300;
+  }
+  .pub-authors strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .pub-abstract {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 24px;
+    position: relative;
+    max-height: 120px;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+  }
+
+  .pub-abstract.expanded { max-height: 1200px; }
+
+  .pub-abstract::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 50px;
+    background: linear-gradient(transparent, var(--card-bg));
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .pub-abstract.expanded::after { opacity: 0; }
+
+  .toggle-abstract {
+    background: none;
+    border: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity 0.3s;
+  }
+  .toggle-abstract:hover { opacity: 0.7; }
+  .toggle-abstract svg {
+    width: 12px; height: 12px;
+    transition: transform 0.3s;
+  }
+  .toggle-abstract.active svg { transform: rotate(180deg); }
+
+  .pub-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .pub-tag {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    padding: 4px 12px;
+    background: var(--tag-bg);
+    border-radius: 20px;
+    color: var(--muted);
+  }
+
+  .pub-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .highlight-item {
+    text-align: center;
+    padding: 16px 12px;
+    background: linear-gradient(135deg, #faf9f6, #f5f3ef);
+    border-radius: 8px;
+  }
+
+  .highlight-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.2;
+  }
+
+  .highlight-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 0.3px;
+  }
+
+  .pub-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .pub-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s;
+  }
+
+  .pub-link.primary {
+    background: var(--ink);
+    color: #fff;
+  }
+  .pub-link.primary:hover { background: var(--accent); }
+
+  .pub-link.secondary {
+    background: var(--tag-bg);
+    color: var(--ink);
+  }
+  .pub-link.secondary:hover { background: var(--border); }
+
+  .pub-link svg { width: 13px; height: 13px; }
+
+  /* ─── Footer ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 1.35s;
+  }
+
+  footer p {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* ─── Animations ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 640px) {
+    .container { padding: 0 20px; }
+    header { padding: 60px 0 40px; }
+    .pub-card { padding: 28px 24px; }
+    .pub-title { font-size: 20px; }
+    .pub-highlights { grid-template-columns: 1fr 1fr; }
+    .header-meta { gap: 16px; }
+  }
+
+  /* Print styles */
+  @media print {
+    body::after { display: none; }
+    .pub-card { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+    .pub-abstract { max-height: none; }
+    .pub-abstract::after { display: none; }
+    .toggle-abstract { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ─── Header ─── -->
+  <header>
+    <span class="header-label">Selected Publications</span>
+    <h1 class="header-name">Hadi Keramati</h1>
+    <p class="header-affiliation">
+      Department of Mechanical Engineering, University of British Columbia<br>
+      Research in AI-driven engineering design, generative modeling &amp; thermal-fluid optimization
+    </p>
+    <div class="header-meta">
+      <a href="mailto:hadi.keramati@ubc.ca">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 4 10 8 10-8"/></svg>
+        hadi.keramati@ubc.ca
+      </a>
+      <a href="https://scholar.google.com" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Google Scholar
+      </a>
+    </div>
+  </header>
+
+  <!-- ─── Section Intro ─── -->
+  <div class="section-intro">
+    <h2>Publications</h2>
+    <p>Three peer-reviewed journal articles spanning reinforcement learning, diffusion models, and multiphysics optimization for engineering design.</p>
+  </div>
+
+  <!-- ─── Publications ─── -->
+  <div class="publications">
+
+    <!-- Paper 1 -->
+    <article class="pub-card" data-number="1">
+      <div class="pub-venue">
+        Int. J. Heat Mass Transfer
+        <span class="year">2022</span>
+      </div>
+      <h3 class="pub-title">Deep Reinforcement Learning for Heat Exchanger Shape Optimization</h3>
+      <p class="pub-authors"><strong>H. Keramati</strong>, F. Hamdullahpur, M. Barzegari</p>
+
+      <div class="pub-abstract" id="abs1">
+        A parametric approach for heat exchanger shape optimization utilizing Deep Reinforcement Learning and Boundary Representation (BREP). Continuous geometric representation of the fluid and solid domain facilitates boundary condition implementation and design space exploration. The framework consists of a Deep Neural Network, a CFD solver with automatic body-fitted mesh generation to solve single fin shape optimization. The RL agent explores the design space using Proximal Policy Optimization in combination with a FEniCS-based CFD environment. The method alleviates the curse of dimensionality compared to voxel and pixel-based optimization of coupled thermal fluid-structure problems.
+      </div>
+      <button class="toggle-abstract" onclick="toggleAbstract('abs1', this)">
+        Read more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+
+      <div class="pub-highlights">
+        <div class="highlight-item">
+          <div class="highlight-value">&gt;30%</div>
+          <div class="highlight-label">Heat transfer improvement</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-value">&gt;60%</div>
+          <div class="highlight-label">Pressure drop reduction</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-value">12–15</div>
+          <div class="highlight-label">Degrees of freedom (Bézier)</div>
+        </div>
+      </div>
+
+      <div class="pub-tags">
+        <span class="pub-tag">Reinforcement Learning</span>
+        <span class="pub-tag">PPO</span>
+        <span class="pub-tag">BREP</span>
+        <span class="pub-tag">FEniCS / CFD</span>
+        <span class="pub-tag">Shape Optimization</span>
+      </div>
+
+      <div class="pub-links">
+        <a class="pub-link primary" href="https://doi.org/10.1016/j.ijheatmasstransfer.2022.123112" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          DOI
+        </a>
+        <a class="pub-link secondary" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          PDF
+        </a>
+      </div>
+    </article>
+
+    <!-- Paper 2 -->
+    <article class="pub-card" data-number="2">
+      <div class="pub-venue">
+        Eng. Appl. Artif. Intell.
+        <span class="year">2026</span>
+      </div>
+      <h3 class="pub-title">A Reward-Directed Diffusion Framework for Generative Design</h3>
+      <p class="pub-authors"><strong>H. Keramati</strong>, P. Kirchen, M. Hannan, R. K. Jaiman</p>
+
+      <div class="pub-abstract" id="abs2">
+        A generative optimization framework built on a fine-tuned diffusion model and reward-directed sampling to generate high-performance engineering designs. The framework employs parametric representations to generate new parameter sets corresponding to designs with improved aerodynamic and hydrodynamic performance. By using an entropy-regularized approach, this work introduces the iterative use of a soft value function within a Markov decision process framework to achieve reward-guided decoding. The proposed approach distributes computational and memory costs across training and inference phases, facilitating generation of high-reward designs even beyond the training data.
+      </div>
+      <button class="toggle-abstract" onclick="toggleAbstract('abs2', this)">
+        Read more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+
+      <div class="pub-highlights">
+        <div class="highlight-item">
+          <div class="highlight-value">&gt;25%</div>
+          <div class="highlight-label">Resistance reduction (ship)</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-value">&gt;10%</div>
+          <div class="highlight-label">Lift-to-drag improvement</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-value">2D + 3D</div>
+          <div class="highlight-label">Airfoil &amp; ship hull design</div>
+        </div>
+      </div>
+
+      <div class="pub-tags">
+        <span class="pub-tag">Diffusion Models</span>
+        <span class="pub-tag">Reward-Directed Sampling</span>
+        <span class="pub-tag">Soft Value Function</span>
+        <span class="pub-tag">Ship Hull Design</span>
+        <span class="pub-tag">Gradient-Free Optimization</span>
+      </div>
+
+      <div class="pub-links">
+        <a class="pub-link primary" href="https://doi.org/10.1016/j.engappai.2025.113378" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          DOI
+        </a>
+        <a class="pub-link secondary" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          PDF
+        </a>
+      </div>
+    </article>
+
+    <!-- Paper 3 -->
+    <article class="pub-card" data-number="3">
+      <div class="pub-venue">
+        Int. J. Heat Mass Transfer
+        <span class="year">2026</span>
+      </div>
+      <h3 class="pub-title">HeatGen: A Guided Diffusion Framework for Multiphysics Heat Sink Design Optimization</h3>
+      <p class="pub-authors"><strong>H. Keramati</strong>, M. Sadeghi, R. K. Jaiman</p>
+
+      <div class="pub-abstract" id="abs3">
+        A generative optimization framework based on a guided denoising diffusion probabilistic model that leverages surrogate gradients to generate heat sink designs minimizing pressure drop while maintaining surface temperatures below a specified threshold. Geometries are represented using boundary representations of multiple fins, and a multi-fidelity approach is employed to generate training data. Two residual neural networks predict pressure drop and surface temperature, whose gradients guide geometry generation toward satisfying low-pressure and temperature constraints. Once trained, inference under new constraints is computationally inexpensive and does not require retraining.
+      </div>
+      <button class="toggle-abstract" onclick="toggleAbstract('abs3', this)">
+        Read more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+
+      <div class="pub-highlights">
+        <div class="highlight-item">
+          <div class="highlight-value">~10%</div>
+          <div class="highlight-label">Lower ΔP vs. CMA-ES</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-value">98%+</div>
+          <div class="highlight-label">Feasible designs generated</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-value">27,500</div>
+          <div class="highlight-label">Multi-fidelity training samples</div>
+        </div>
+      </div>
+
+      <div class="pub-tags">
+        <span class="pub-tag">DDPM</span>
+        <span class="pub-tag">Gradient-Guided Diffusion</span>
+        <span class="pub-tag">Heat Sink Design</span>
+        <span class="pub-tag">Multi-Objective</span>
+        <span class="pub-tag">Electronics Cooling</span>
+      </div>
+
+      <div class="pub-links">
+        <a class="pub-link primary" href="#" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          DOI
+        </a>
+        <a class="pub-link secondary" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          PDF
+        </a>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- ─── Footer ─── -->
+  <footer>
+    <p>Prepared for faculty review &middot; <a href="mailto:hadi.keramati@ubc.ca">hadi.keramati@ubc.ca</a> &middot; University of British Columbia</p>
+  </footer>
+
+</div>
+
+<script>
+function toggleAbstract(id, btn) {
+  const el = document.getElementById(id);
+  el.classList.toggle('expanded');
+  btn.classList.toggle('active');
+  btn.firstChild.textContent = el.classList.contains('expanded') ? 'Show less ' : 'Read more ';
+}
+</script>
+
+</body>
+</html>
